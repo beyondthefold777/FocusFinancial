@@ -1,14 +1,48 @@
+import { useState, useRef, useEffect } from 'react';
 import { Menu } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef();
+
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    const handler = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
   return (
-    <nav className="flex items-center justify-between px-6 py-4 bg-black/60 backdrop-blur-md shadow-md sticky top-0 z-50">
-      <div className="text-2xl font-extrabold text-focusPurpleLight tracking-wide">
-        Focus<span className="text-white">Financial</span>
+    <nav className="navbar">
+      {/* Logo */}
+      <div className="logo">
+        <img src="/logo.png" alt="Logo" style={{ height: '40px', width: '40px' }} />
       </div>
-      <button className="text-white hover:text-focusPurpleLight transition duration-300">
-        <Menu size={28} />
-      </button>
+
+      {/* Hamburger Menu */}
+      <div className="menu-wrapper" ref={menuRef}>
+        <button
+          onClick={() => setOpen(!open)}
+          className="menu-button"
+          aria-label="Toggle menu"
+        >
+          <Menu size={28} />
+        </button>
+
+        {/* Dropdown */}
+        {open && (
+          <div className="dropdown">
+            <Link to="/" onClick={() => setOpen(false)}>Home</Link>
+            <Link to="/about" onClick={() => setOpen(false)}>About</Link>
+            <Link to="/contact" onClick={() => setOpen(false)}>Contact</Link>
+          </div>
+        )}
+      </div>
     </nav>
   );
 }
