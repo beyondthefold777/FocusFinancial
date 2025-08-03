@@ -7,7 +7,7 @@ export default function Contact() {
       <p>Have questions or need help with a transaction?</p>
       <ul className="space-y-2">
         <li><strong>Email:</strong> support@focusfinancial.io</li>
-        <li><strong>Phone (WhatsApp preferred):</strong> +1 (XXX) XXX-XXXX</li>
+        <li><strong>Phone:</strong> +1 (646) 431-6433</li>
         <li><strong>Business Hours:</strong> Mon–Fri, 9am–6pm EST</li>
       </ul>
     </div>

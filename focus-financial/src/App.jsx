@@ -4,7 +4,9 @@ import Intro from './components/Intro';
 import StablecoinSelector from './components/StablecoinSelector';
 import About from './components/About';
 import Contact from './components/Contact';
-import ConvertForm from './components/ConvertForm'; // NEW
+import ConvertForm from './components/ConvertForm';
+import Login from './components/Login';
+import Register from './components/Register';
 
 export default function App() {
   return (
@@ -19,11 +21,17 @@ export default function App() {
                 <StablecoinSelector />
               </>
             } />
-            <Route path="/convert/:pair" element={<ConvertForm />} /> {/* NEW */}
+            <Route path="/convert/:pair" element={<ConvertForm />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />           {/* ✅ Added */}
+            <Route path="/register" element={<Register />} />     {/* ✅ Added */}
           </Routes>
         </main>
+
+        <footer style={{ textAlign: 'center', padding: '1rem 0', fontSize: '0.9rem', color: '#ccc' }}>
+          &copy; {new Date().getFullYear()} Focus Financial. All rights reserved.
+        </footer>
       </div>
     </Router>
   );

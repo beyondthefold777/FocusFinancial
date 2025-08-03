@@ -6,7 +6,6 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const menuRef = useRef();
 
-  // Close dropdown if clicked outside
   useEffect(() => {
     const handler = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -21,27 +20,29 @@ export default function Navbar() {
     <nav className="navbar">
       {/* Logo */}
       <div className="logo">
-        <img src="/logo.png" alt="Logo" style={{ height: '40px', width: '40px' }} />
+        <img src="/focus.png" alt="Logo" style={{ height: '150px', width: '200px' }} />
       </div>
 
-      {/* Hamburger Menu */}
-      <div className="menu-wrapper" ref={menuRef}>
-        <button
-          onClick={() => setOpen(!open)}
-          className="menu-button"
-          aria-label="Toggle menu"
-        >
-          <Menu size={28} />
-        </button>
+      {/* Menu */}
+      <div className="flex items-center gap-4">
+        {/* Hamburger Menu */}
+        <div className="menu-wrapper" ref={menuRef}>
+          <button
+            onClick={() => setOpen(!open)}
+            className="menu-button"
+            aria-label="Toggle menu"
+          >
+            <Menu size={28} />
+          </button>
 
-        {/* Dropdown */}
-        {open && (
-          <div className="dropdown">
-            <Link to="/" onClick={() => setOpen(false)}>Home</Link>
-            <Link to="/about" onClick={() => setOpen(false)}>About</Link>
-            <Link to="/contact" onClick={() => setOpen(false)}>Contact</Link>
-          </div>
-        )}
+          {open && (
+            <div className="dropdown">
+              <Link to="/" onClick={() => setOpen(false)}>Home</Link>
+              <Link to="/about" onClick={() => setOpen(false)}>About</Link>
+              <Link to="/contact" onClick={() => setOpen(false)}>Contact</Link>
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );
