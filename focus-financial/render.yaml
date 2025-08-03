@@ -6,7 +6,8 @@ services:
     branch: main
     rootDir: .
     buildCommand: |
-      npm install && npm run build
+      npm install
+      npm run build
       cd server && npm install
     startCommand: cd server && node server.js
     envVars:
