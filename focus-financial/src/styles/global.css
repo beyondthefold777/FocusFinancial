@@ -38,8 +38,8 @@ body {
 }
 
 .logo img {
-  width: 40px;
-  height: 40px;
+  width: 150px;
+  height: 150px;
 }
 
 .menu-button {
@@ -233,4 +233,82 @@ body {
   margin-bottom: 1rem;
   color: #d1c4f7;
   font-weight: 600;
+}
+.footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-top: 4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* Navbar Auth Buttons */
+.nav-auth-btn {
+  background-color: black;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  border: 1px solid white;
+}
+
+.nav-auth-btn:hover {
+  background-color: #111;
+  color: #a78bfa;
+  border-color: #a78bfa;
+}
+/* Styling for the entire Intro section */
+.intro-container {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 20px; /* Adds spacing around the content */
+}
+
+/* Styling for the title */
+.intro-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #ede6f0; /* Focus Purple */
+  margin-bottom: 20px; /* Adds spacing below the title */
+}
+
+/* Styling for the description */
+.intro-description {
+  font-size: 18px;
+  color: #d1d1d1;
+  line-height: 1.8;
+  margin-bottom: 40px; /* Adds spacing below the paragraph */
+}
+
+/* Highlight text for stablecoin names */
+.highlight-text {
+  color: white;
+  font-weight: 600;
+}
+
+/* Styling for the feature section */
+.features {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Styling for each feature item */
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #d1d1d1;
+  font-size: 18px;
+}
+
+/* Icon styling */
+.feature-icon {
+  color: #7f3f98; /* Focus Purple */
+  font-size: 28px;
 }

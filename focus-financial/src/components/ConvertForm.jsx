@@ -4,7 +4,8 @@ import { useState } from 'react';
 export default function ConvertForm() {
   const { pair } = useParams();
   const [usdAmount, setUsdAmount] = useState('');
-  const [total, setTotal] = useState(null);
+  const [walletAddress, setWalletAddress] = useState('');
+  const [totalToSend, setTotalToSend] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
@@ -32,22 +33,20 @@ export default function ConvertForm() {
     setCopied(false);
 
     if (!isNaN(value) && value > 0) {
-      const calculated = parseFloat(value) * 1.06;
-
-      if (calculated > 100000) {
-        setError('⚠️ Value exceeds the maximum allowed after fees.');
-        setTotal(null);
-      } else {
-        setTotal(calculated.toFixed(2));
-      }
+      setError('');
+      const baseAmount = parseFloat(value);
+      const fee = baseAmount * 0.08;
+      setTotalToSend((baseAmount + fee).toFixed(2));
     } else {
-      setTotal(null);
+      setTotalToSend(null);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!total || error) return;
+    if (!totalToSend || !walletAddress || error) return;
+
+    // Submission logic here (or placeholder)
     setSubmitted(true);
   };
 
@@ -56,20 +55,23 @@ export default function ConvertForm() {
     setCopied(false);
   };
 
-  const wireInfo = `
-Focus Financial Wire Transfer Info:
+  const baseAmount = parseFloat(usdAmount) || 0;
+  const feeAmount = (baseAmount * 0.08).toFixed(2);
 
-Account Name: Payward Interactive, Inc.
-Bank Name: The Dart Bank
-Company Address: 106 E. Lincolnway, Fourth Floor, Cheyenne, WY 82001
-Bank Address: 368 S. Park Street, Mason, MI 48854
-Account Number: 4002001191590007
-Routing Number: 072410903
+  const wireInfo = `
+Bank Name: JPMorgan Chase Bank, N.A.
+Bank Address: 270 Park Avenue, New York, NY 10017
+Account Name: Focus Financial LLC
+Account Number: 570631252
+ABA Routing Number: 044000037
+ACH Routing Number: 044000037
+SWIFT Code: CHASUS33
 `;
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(wireInfo);
+      const fullText = `Send $${totalToSend} to:\n\n${wireInfo}`;
+      await navigator.clipboard.writeText(fullText);
       setCopied(true);
       setTimeout(() => setCopied(false), 3000);
     } catch (err) {
@@ -81,8 +83,7 @@ Routing Number: 072410903
     <div className="selector">
       <h2>Convert USD to {formatPair(pair)}</h2>
       <p className="form-info">
-        💰 <strong>6% fee</strong> applied per transaction. <br />
-        ⛔ <strong>Max total including fee: $100,000</strong>
+        💰 An <strong>8% fee</strong> is added on top of your desired amount.
       </p>
 
       {!submitted ? (
@@ -91,39 +92,55 @@ Routing Number: 072410903
             type="number"
             value={usdAmount}
             onChange={handleChange}
-            placeholder="Enter USD amount"
+            placeholder="Enter amount you want to receive"
             className="input-field"
-            max="100000"
+          />
+
+          <input
+            type="text"
+            value={walletAddress}
+            onChange={(e) => setWalletAddress(e.target.value)}
+            placeholder={`Enter your ${formatPair(pair)} wallet address`}
+            className="input-field"
           />
 
           {error && <p className="form-info" style={{ color: '#ff7675' }}>{error}</p>}
 
-          {total && !error && (
-            <p className="total-display">
-              Total (incl. 6% fee): <strong>${total}</strong>
-            </p>
+          {totalToSend && !error && (
+            <div className="total-display">
+              <p>You will receive: <strong>${usdAmount}</strong></p>
+              <p>Fee (8%): <strong>${feeAmount}</strong></p>
+              <p>You need to send: <strong>${totalToSend}</strong></p>
+            </div>
           )}
 
-          <button className="btn" type="submit" disabled={!usdAmount || !!error}>
+          <button className="btn" type="submit" disabled={!usdAmount || !walletAddress || !!error}>
             Submit
           </button>
         </form>
       ) : (
         <div className="selector" style={{ marginTop: '2rem', textAlign: 'center' }}>
-          <h2>Send ${total} via Bank Wire Transfer to the Details Below</h2>
-        <div
+          <h2>Transaction submitted.</h2>
+          <p>
+            Please send <strong>${totalToSend}</strong> to the wire details below. Your stablecoins will be delivered within 2-6 hours.
+          </p>
+
+          <div
             style={{
               marginTop: '1rem',
               color: '#d1c4f7',
               lineHeight: '1.8',
               whiteSpace: 'pre-wrap',
+              background: '#111',
+              padding: '1rem',
+              borderRadius: '8px'
             }}
           >
             {wireInfo}
           </div>
 
           <button className="btn" onClick={handleCopy} style={{ marginTop: '1.5rem' }}>
-            📋 {copied ? 'Copied!' : 'Copy Wire Info'}
+            📋 {copied ? 'Copied!' : 'Copy Bank Info'}
           </button>
 
           <button onClick={handleBack} className="btn" style={{ marginTop: '1rem' }}>
